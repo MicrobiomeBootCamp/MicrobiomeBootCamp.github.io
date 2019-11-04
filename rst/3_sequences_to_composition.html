@@ -33,10 +33,9 @@
         <li class="right" >
           <a href="2_experimental_design.html" title="Experimental Design and Sample Preparation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">VMI Bootcamp II 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">VMI Bootcamp III 1.0 documentation</a> &#187;</li>
       </ul>
     </div>
-
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
@@ -351,8 +350,7 @@ ls -lsh paired_end/raw_seqs/
 qiime tools import <span class="se">\</span>
    --type EMPPairedEndSequences <span class="se">\</span>
    --input-path paired_end/raw_seqs/ <span class="se">\</span>
-   --output-path paired_end/1_0_input_seqs.qza <span class="se">\</span>
-   --output-dir paired_end/1_0_extra.qza
+   --output-path paired_end/1_0_input_seqs.qza
 
 <span class="c1"># See the new output file</span>
 ls -lsh paired_end
@@ -363,7 +361,8 @@ qiime demux emp-paired <span class="se">\</span>
    --m-barcodes-column BarcodeSequence <span class="se">\</span>
    --i-seqs paired_end/1_0_input_seqs.qza <span class="se">\</span>
    --o-per-sample-sequences paired_end/1_1_demultiplexed_seqs <span class="se">\</span>
-   --p-rev-comp-mapping-barcodes
+   --p-rev-comp-mapping-barcodes <span class="se">\</span>
+   --output-dir paired_end/details/1_0_extra.qza
 
 <span class="c1"># See the new output file</span>
 ls -lsh paired_end
