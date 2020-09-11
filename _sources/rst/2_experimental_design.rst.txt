@@ -252,12 +252,13 @@ Metadata File
       - Are TSV - tab separated values
          - TSV is a .txt output format from Excel
       - A header line starting with a # indicates the column names
+      - There is a bit more flexibility in file structure in QIIME2, but any mapping file that worked in QIIME1 is a valid metadata file in QIIME2
 
 .. figure:: ../images/map_exp.png
    :scale: 30 %
    :alt: map_exp
 
-   Source: Example mapping file in excel.
+   Source: Example metadata file in excel.
 
       - Always start with **#sampleid** column
          - A unique id for each sample - cannot be the same as any other sample
@@ -269,18 +270,18 @@ Metadata File
          - Allows testing if these factors influenced the community composition
          - Have columns indicating which samples are blanks, mock community, and generous donor samples
 
-      - Have columns for your **treatement** and any **covariates** of interest
+      - Have columns for your **treatment** and any **covariates** of interest
          - Age, sex, BMI, collection season...
 
       - Last column should be **description** if you need backward compatibility with QIIME1
 
-For more detailed information check out the full `QIIME2 Metadata Guide! <https://docs.qiime2.org/2018.8/tutorials/metadata/>`_
+For more detailed information check out the full `QIIME2 Metadata Guide! <https://docs.qiime2.org/2020.8/tutorials/metadata/>`_
 
 **Best Practices**
 
    - Rule Number 1: Don't get fancy!
       - Don't use spaces, use _ (underscore) instead
-      - Except #sampleid, the only punctuation in this column can be dashes '-' (no underscores)
+      - Except #sampleid, the only punctuation in this column can be dashes '-' or '.' (no underscores)
       - Don't include other types of punctuation, this will only cause problems later on!
 
    - Leading and trailing white spaces are ignored
