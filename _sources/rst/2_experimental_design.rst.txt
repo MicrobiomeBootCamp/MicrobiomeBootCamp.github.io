@@ -241,12 +241,12 @@ Sequencing Platforms
       - But *much* lower coverage and multiplexing = higher costs
       - Higher error rates
 
-Mapping File
+Metadata File
 ------------------------------------------------------------------
 
 **How do you store all of this information about samples in a useful way?**
 
-   - **A mapping file is composed of:**
+   - **A metadata file is composed of:**
       - Each row representing a sample
       - Each column representing some information about each sample
       - Are TSV - tab separated values
