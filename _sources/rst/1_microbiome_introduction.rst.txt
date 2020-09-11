@@ -223,6 +223,7 @@ Advantages and Disadvantages
 
     - Resolution is limited because the amplicons are short, so generally family or genera is the most that can be distinguished.
         - Really cannot confidently distinguish species or strains within a genus.
+        - Newer primers for longer amplicon regions (e.g., 16S V4-V5) allow for species-level resolution, but still not strain-level resolution.
 
 .. figure:: ../images/amplicon_alignment.png
     :scale: 120 %
@@ -234,6 +235,7 @@ Advantages and Disadvantages
     - 16S rRNA gene copy number can vary by an order of magnitude between bacterial species.
         - The databases try to correct for this, but it's not perfect.
         - This means there is some bias in the relative abundance of members.
+        - 16S rt-qPCR can be used to quantify the total number of 16S rRNA genes in your sample or the number of 16S rRNA genes for a specific group of bacteria.
 
 .. figure:: ../images/rrna_copy_number.png
    :scale: 100 %
