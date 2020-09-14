@@ -60,7 +60,7 @@
 <p>It is particularly important to consider the details of your study before you start</p>
 <blockquote>
 <div><ul class="simple">
-<li>Cannot add samples later</li>
+<li>Cannot add samples later without batch effects</li>
 <li>Cannot remove contamination after samples are collected</li>
 <li>Cannot add controls necessary to validate quality after sequencing</li>
 <li>Cannot remove bias if other factors very with treatment of interest</li>
@@ -92,10 +92,10 @@
 <dd><ul class="first last">
 <li><p class="first">Often people hypothesize that “the microbiome will change”, without considering what that actually means
 - Amplicon sequencing doesn’t tell you community function
-- It won’t give you strain or even consistent species level resoultion</p>
+- It won’t give you strain or even consistent species level resolution</p>
 <blockquote>
 <div><ul class="simple">
-<li>In addition to <em>E. coli</em>, there are five other species in the genus <em>Escheria</em> and some are commensal in the human gut</li>
+<li>In addition to <em>E. coli</em>, there are five other species in the genus <em>Escherichia</em> and some are commensal in the human gut</li>
 </ul>
 </div></blockquote>
 </li>
@@ -128,7 +128,7 @@
 <dt>Stabilization solution</dt>
 <dd><ul class="first last">
 <li>Need DNA <em>and</em> RNA</li>
-<li>Other ‘omics - <em>i.e. mass spectrometry affected by salt concentration</em></li>
+<li>Other ‘omics - <em>i.e. mass spectrometry affected by salt concentration, SCFA metabolites interact with ethanol</em></li>
 </ul>
 </dd>
 </dl>
@@ -147,7 +147,7 @@
 <li><dl class="first docutils">
 <dt><strong>Storage</strong></dt>
 <dd><ul class="first last">
-<li>Immediate storage -80C</li>
+<li>Immediate storage -80C > Storage at -20C > Storage at room temperature in >90% ethanol</li>
 <li>Long term stabilization solutions can introduce bias</li>
 <li>Prevent bacterial overgrowth at room temperature</li>
 </ul>
@@ -189,6 +189,14 @@
 </dd>
 </dl>
 </li>
+<li><dl class="first docutils">
+<dt>Other factors that can influence microbiomes</dt>
+<dd><ul class="first last">
+<li>Age, sex, reproductive status, health status, body fat percentage, recent antibiotic use</li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </div></blockquote>
 </li>
@@ -214,7 +222,7 @@
 </div></blockquote>
 <ul class="simple">
 <li><dl class="first docutils">
-<dt>Work in biosaftey hood whenever possible</dt>
+<dt>Work in biosafety hood whenever possible</dt>
 <dd><ul class="first last">
 <li>Particularly sensitive to contamination before PCR steps</li>
 </ul>
@@ -274,7 +282,7 @@
 <li><dl class="first docutils">
 <dt>Cannot control amount provided if self-collection</dt>
 <dd><ul class="first last">
-<li>Must stablize to prevent bacterial overgrowth, or ‘blooms’</li>
+<li>Must stabilize to prevent bacterial overgrowth, or ‘blooms’</li>
 </ul>
 </dd>
 </dl>
@@ -309,8 +317,9 @@
 <dt>Efficiency at lysing cells is important</dt>
 <dd><ul class="first last">
 <li>Bead beating versus chemical lysis</li>
-<li>Mechanical bead beating seems to be most thorough gram +/-</li>
-<li>Keep in mind bead beating heats the sample through friction, don’t over-do it!</li>
+<li>Mechanical bead beating seems to be best for obtaining both gram negative and gram positive bacteria</li>
+<li>Keep in mind bead beating heats the sample through friction, don’t over-do it! Heat can be your friend for difficult-to-extract samples, though</li>
+<li>Heat can be your friend for difficult-to-extract samples, though</li>
 </ul>
 </dd>
 </dl>
@@ -378,6 +387,9 @@
 <p>Earth Microbiome Project V4 Primers</p>
 <p>515F FWD: GTGYCAGCMGCCGCGGTAA</p>
 <p>806R REV: GGACTACNVGGGTWTCTAAT</p>
+<p>Earth Microbiome Project V4-V5 Primers</p>
+<p>515F FWD: GTGYCAGCMGCCGCGGTAA</p>
+<p>926R REV: CCGYCAATTYMTTTRAGTTT</p>
 <p><em>The primer sequences in EMP protocols are always listed in the 5′ -&gt; 3′ orientation.  This is the orientation that should be used for ordering.</em></p>
 <p>Components of full reaction:</p>
 <p>_____5′ Illumina adapter_________________________Golay barcode_____Pad________Linker___Forward primer</p>
@@ -409,8 +421,8 @@
 <li><dl class="first docutils">
 <dt>Short sequences 100-250bp generally cover 1-3 variable regions</dt>
 <dd><ul class="first last">
-<li>Allows high coverage, but lose resolution past genus level</li>
-<li>Paired end is better than single end</li>
+<li>Allows high coverage, but lose resolution past genus or species level</li>
+<li>Paired end is better than single end, as long as your forward and reverse reads overlap</li>
 </ul>
 </dd>
 </dl>
@@ -425,7 +437,7 @@
 <dl class="docutils">
 <dt><strong>Illumina Amplicon Sequencing at VANTAGE</strong></dt>
 <dd><ul class="first last simple">
-<li>250 bp sequence reads (Covers entire V4 region)</li>
+<li>250 bp sequence reads (Covers entire V4 or V4-V5 region)</li>
 <li>Dual-index sequencing strategy - increased multiplexing</li>
 <li>Each MiSeq run produces &gt;5,000,000 reads (Great for multiplexing)</li>
 <li>Best option for 16S rRNA gene amplicon sequencing</li>
@@ -449,6 +461,7 @@
 <li>Strain level resolution</li>
 <li>But <em>much</em> lower coverage and multiplexing = higher costs</li>
 <li>Higher error rates</li>
+<li>Take home: great for long reads, bad for short reads (i.e., amplicon sequencing)</li>
 </ul>
 </dd>
 </dl>
@@ -456,13 +469,13 @@
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="mapping-file">
-<h2>Mapping File<a class="headerlink" href="#mapping-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="metadata-file">
+<h2>Metadata File<a class="headerlink" href="#metadata-file" title="Permalink to this headline">¶</a></h2>
 <p><strong>How do you store all of this information about samples in a useful way?</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><dl class="first docutils">
-<dt><strong>A mapping file is composed of:</strong></dt>
+<dt><strong>A metadata file is composed of:</strong></dt>
 <dd><ul class="first last">
 <li>Each row representing a sample</li>
 <li>Each column representing some information about each sample</li>
@@ -479,11 +492,16 @@
 </dd>
 </dl>
 </li>
+<li>There is a bit more flexibility in file structure in QIIME2, but any mapping file that worked in QIIME1 is a valid metadata file in QIIME2</li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </div></blockquote>
 <div class="figure" id="id8">
 <a class="reference internal image-reference" href="../_images/map_exp.png"><img alt="map_exp" src="../_images/map_exp.png" style="width: 841.8px; height: 523.2px;" /></a>
-<p class="caption"><span class="caption-text">Source: Example mapping file in excel.</span></p>
+<p class="caption"><span class="caption-text">Source: Example metadata file in excel.</span></p>
 <div class="legend">
 <blockquote>
 <div><ul class="simple">
@@ -513,7 +531,7 @@
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Have columns for your <strong>treatement</strong> and any <strong>covariates</strong> of interest</dt>
+<dt>Have columns for your <strong>treatment</strong> and any <strong>covariates</strong> of interest</dt>
 <dd><ul class="first last">
 <li>Age, sex, BMI, collection season…</li>
 </ul>
@@ -525,7 +543,7 @@
 </div></blockquote>
 </div>
 </div>
-<p>For more detailed information check out the full <a class="reference external" href="https://docs.qiime2.org/2018.8/tutorials/metadata/">QIIME2 Metadata Guide!</a></p>
+<p>For more detailed information check out the full <a class="reference external" href="https://docs.qiime2.org/2020.8/tutorials/metadata/">QIIME2 Metadata Guide!</a></p>
 <p><strong>Best Practices</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -533,7 +551,7 @@
 <dt>Rule Number 1: Don’t get fancy!</dt>
 <dd><ul class="first last">
 <li>Don’t use spaces, use _ (underscore) instead</li>
-<li>Except #sampleid, the only punctuation in this column can be dashes ‘-‘ (no underscores)</li>
+<li>Except #sampleid, the only punctuation in this column can be dashes ‘-‘ or ‘.‘ (no underscores)</li>
 <li>Don’t include other types of punctuation, this will only cause problems later on!</li>
 </ul>
 </dd>
@@ -567,7 +585,7 @@
 <li><a class="reference internal" href="#dna-extraction">DNA Extraction</a></li>
 <li><a class="reference internal" href="#amplification">Amplification</a></li>
 <li><a class="reference internal" href="#sequencing-platforms">Sequencing Platforms</a></li>
-<li><a class="reference internal" href="#mapping-file">Mapping File</a></li>
+<li><a class="reference internal" href="#metadata-file">Metadata File</a></li>
 </ul>
 </li>
 </ul>
