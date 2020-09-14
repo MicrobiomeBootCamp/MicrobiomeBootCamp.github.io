@@ -117,7 +117,7 @@
 </div>
 <div class="section" id="types-of-sequences-in-qiime2">
 <h2>Types of Sequences in QIIME2<a class="headerlink" href="#types-of-sequences-in-qiime2" title="Permalink to this headline">¶</a></h2>
-<p><strong>How do you make QIIME2 aware of your sequences and mapping file?</strong></p>
+<p><strong>How do you make QIIME2 aware of your sequences and metadata file?</strong></p>
 <div class="figure" id="id6">
 <a class="reference internal image-reference" href="../_images/multiplexing.jpg"><img alt="multiplexing" src="../_images/multiplexing.jpg" style="width: 768.0px; height: 576.0px;" /></a>
 <p class="caption"><span class="caption-text">Source: Martha Park - Institute for Quantitative &amp; Computational Biosciences Workshop</span></p>
@@ -171,7 +171,7 @@
 <dt><strong>Manifest Format</strong></dt>
 <dd><ul class="first last simple">
 <li>CSV - comma separated values in each column</li>
-<li>sample-id must match the sample names in your mapping file</li>
+<li>sample-id must match the sample names in your metadata file</li>
 <li>Header line must match below</li>
 <li>Save as CSV file</li>
 </ul>
@@ -290,7 +290,7 @@ qiime tools import <span class="se">\</span>
 <a class="reference internal image-reference" href="../_images/you_can.gif"><img alt="you_can" src="../_images/you_can.gif" style="width: 600.0px; height: 375.6px;" /></a>
 <p class="caption"><span class="caption-text">Source: giphy.com</span></p>
 </div>
-<p>First lets take a look at the mapping file to understand how QIIME2 creates visuals</p>
+<p>First lets take a look at the metadata file to understand how QIIME2 creates visuals</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime metadata tabulate <span class="se">\</span>
   --m-input-file paired_end/metadata.tsv <span class="se">\</span>
   --o-visualization paired_end/1_0_metadata_stats
@@ -354,7 +354,7 @@ qiime tools import <span class="se">\</span>
 <span class="c1"># See the new output file</span>
 ls -lsh paired_end
 
-<span class="c1"># Demultiplex the sequences based on barcodes in mapping file</span>
+<span class="c1"># Demultiplex the sequences based on barcodes in metadata file</span>
 qiime demux emp-paired <span class="se">\</span>
    --m-barcodes-file paired_end/metadata.tsv <span class="se">\</span>
    --m-barcodes-column BarcodeSequence <span class="se">\</span>

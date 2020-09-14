@@ -773,7 +773,7 @@ ls -lsh american_gut/2_3_diversity_core_phylogenetic/
    <span class="c1"># print the diversity vector name</span>
    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$diversity_folder</span><span class="s2">&quot;&quot;</span><span class="nv">$alpha_metric</span><span class="s2">&quot;</span>_vector.qza
 
-   <span class="c1">### ALPHA ASSOCIATION CATEGORICAL MAPPING ###</span>
+   <span class="c1">### ALPHA ASSOCIATION CATEGORICAL METADATA ###</span>
    qiime diversity alpha-group-significance <span class="se">\</span>
       --i-alpha-diversity <span class="s2">&quot;</span><span class="nv">$diversity_folder</span><span class="s2">&quot;&quot;</span><span class="nv">$alpha_metric</span><span class="s2">&quot;</span>_vector.qza <span class="se">\</span>
       --m-metadata-file <span class="s2">&quot;</span><span class="nv">$map</span><span class="s2">&quot;</span> <span class="se">\</span>
