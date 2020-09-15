@@ -148,7 +148,7 @@
 </div>
 <div class="figure" id="id7">
 <a class="reference internal image-reference" href="../_images/qiime2_import_demultiplex.png"><img alt="qiime2_import_demultiplex" src="../_images/qiime2_import_demultiplex.png" style="width: 1191.6px; height: 591.0px;" /></a>
-<p class="caption"><span class="caption-text">Source: QIIME2 - <a class="reference external" href="https://docs.qiime2.org/2018.8/tutorials/overview/#demultiplexing">https://docs.qiime2.org/2018.8/tutorials/overview/#demultiplexing</a></span></p>
+<p class="caption"><span class="caption-text">Source: QIIME2 - <a class="reference external" href="https://docs.qiime2.org/2020.8/tutorials/overview/#demultiplexing">https://docs.qiime2.org/2020.8/tutorials/overview/#demultiplexing</a></span></p>
 </div>
 <p><strong>Generally importing sequences will follow this format:</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime tools import <span class="se">\</span>
@@ -173,6 +173,7 @@
 <li>CSV - comma separated values in each column</li>
 <li>sample-id must match the sample names in your metadata file</li>
 <li>Header line must match below</li>
+<li>There must be one line per file (one per sample for single end, two per sample for paired end)</li>
 <li>Save as CSV file</li>
 </ul>
 </dd>
@@ -185,8 +186,8 @@
 <dd><ul class="first last simple">
 <li>Phred scores are sometimes offset by 31, depends on sequencer software</li>
 <li>This is important because they are always converted to 33 - Ask sequencing center!</li>
-<li>If you can ask for 33, as the 64 can be slow to convert for large files</li>
-</ul>
+<li>If you can, ask for 33, as the 64 can be slow to convert for large files</li>
+<li>Phred 64 is relatively rare these days</li></ul>
 </dd>
 </dl>
 <div class="figure" id="id8">
@@ -284,7 +285,7 @@ qiime tools import <span class="se">\</span>
 <p><strong>There are other options for inputting sequences</strong>, check the <a class="reference external" href="https://docs.qiime2.org/2018.8/tutorials/importing/">QIIME2 documentation</a> if these don’t fit your data</p>
 </div>
 <div class="section" id="importing-demultiplexing-and-sequence-quality-control">
-<h2>Importing, Demultiplexing, and Sequence Quality Control<a class="headerlink" href="#importing-demultiplexing-and-sequence-quality-control" title="Permalink to this headline">¶</a></h2>
+<h2>Importing and Demultiplexing<a class="headerlink" href="#importing-and-demultiplexing" title="Permalink to this headline">¶</a></h2>
 <p><strong>Let’s try it out with some example data!</strong></p>
 <div class="figure" id="id9">
 <a class="reference internal image-reference" href="../_images/you_can.gif"><img alt="you_can" src="../_images/you_can.gif" style="width: 600.0px; height: 375.6px;" /></a>
@@ -388,26 +389,11 @@ qiime tools view paired_end/1_2_demultiplexed_seqs_summary.qzv
 <a class="reference internal image-reference" href="../_images/pe_quality.png"><img alt="pe_quality" src="../_images/pe_quality.png" style="width: 765.0px; height: 450.9px;" /></a>
 <p class="caption"><span class="caption-text">Paired end quality scores across sequence. Source: Kwon, S. Lee, B. Yoon, S. doi: 10.1186/1471-2105-15-S9-S10</span></p>
 </div>
-<p><strong>Let’s align the paired end sequences and then look at some summary info</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### JOIN PAIRED ENDS #####</span>
-qiime vsearch join-pairs <span class="se">\</span>
-   --i-demultiplexed-seqs paired_end/1_1_demultiplexed_seqs.qza <span class="se">\</span>
-   --o-joined-sequences paired_end/1_3_joined_seqs.qza
-
-<span class="c1"># See the new output file</span>
-ls -lsh paired_end
-
-<span class="c1">##### SUMMARIZE JOINED SEQUENCES #####</span>
-qiime demux summarize <span class="se">\</span>
-   --i-data paired_end/1_3_joined_seqs.qza <span class="se">\</span>
-   --o-visualization paired_end/1_4_joined_summary
-
-<span class="c1"># VIEW THE RESULTS IN BROWSER #</span>
-qiime tools view paired_end/1_4_joined_summary.qzv
-</pre></div>
-</div>
+<p><strong>We also need to do some trimming and filtering to remove basepairs and sequences with low quality scores</strong></p>
 <dl class="docutils">
-<dt><strong>Note how input and output files are named incrementally!</strong></dt>
+<p><strong>And, we need to characterize the community</strong></p>
+<dl class="docutils">
+<dt><strong>Note: Input and output files are named incrementally!</strong></dt>
 <dd><ul class="first last simple">
 <li>This keeps them in order when you open in a folder</li>
 <li>Allows logic flow of code and files to align</li>
@@ -415,93 +401,65 @@ qiime tools view paired_end/1_4_joined_summary.qzv
 </ul>
 </dd>
 </dl>
-<p>There are other ways to join reads, <a class="reference external" href="https://docs.qiime2.org/2018.8/tutorials/read-joining/">here are some other read joining options</a>.</p>
-<p>** Finally we should filter low quality sequences with Phred scores**</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### PERFORM QUALITY CONTROL BASED ON PHRED Q SCORES #####</span>
-qiime quality-filter q-score-joined <span class="se">\</span>
-  --i-demux paired_end/1_3_joined_seqs.qza <span class="se">\</span>
-  --o-filtered-sequences paired_end/1_5_qc_seqs.qza <span class="se">\</span>
-  --o-filter-stats paired_end/1_6_qc_seqs_summary.qza
-
-<span class="c1">#### SUMMARIZE JOINED SEQUENCES #####</span>
-qiime demux summarize <span class="se">\</span>
-   --i-data paired_end/1_5_qc_seqs.qza <span class="se">\</span>
-   --o-visualization paired_end/1_7_qc_summary
-
-<span class="c1"># VIEW THE RESULTS IN BROWSER #</span>
-qiime tools view paired_end/1_7_qc_summary.qzv
-</pre></div>
 </div>
 <p><strong>Keep in mind there are often more options than just the ones I am showing here…</strong></p>
 <p>To view all of the parameters available in a QIIME2 script follow just the function call with –help</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># LIST ALL PARAMETERS FOR quality-filter q-score-joined SCRIPT #</span>
-qiime quality-filter q-score-joined --help
+qiime demux emp-paired --help
 </pre></div>
 </div>
-<p><strong>For example here are all of the useful options for filtering by quality scores</strong></p>
+<p><strong>For example here are all of the useful options for demultiplexing</strong></p>
 <blockquote>
 <div><table class="docutils option-list" frame="void" rules="none">
 <col class="option" />
 <col class="description" />
 <tbody valign="top">
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--i-demux <var>ARTIFACT_PATH</var></span></kbd></td>
+<kbd><span class="option">--i-seqs <var>ARTIFACT EMPPairedEndSequences</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>The demultiplexed sequence data to be
-quality filtered.  [required]</td></tr>
+<tr><td>&#160;</td><td>The paired end sequences to be demultiplexed.
+[required]</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--p-min-quality <var>INTEGER</var></span></kbd></td>
+<kbd><span class="option">--m-barcodes-column <var>COLUMN MetadataColumn[Categorical]</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>The minimum acceptable PHRED score. All
-PHRED scores less that this value are
-considered to be low PHRED scores.
-[default: 4]</td></tr>
+<tr><td>&#160;</td><td>The sample metadata column containing the per-sample
+  barcodes.
+  [required]</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--p-quality-window <var>INTEGER</var></span></kbd></td>
+<kbd><span class="option">--p-golay-error-correction / --p-no-golay-error-correction <var> </var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>The maximum number of low PHRED scores that
-can be observed in direct succession before
-truncating a sequence read.  [default: 3]</td></tr>
+<tr><td>&#160;</td><td>Perform 12nt Golay error correction on the barcode
+  reads.
+[default: True]</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--p-min-length-fraction <var>FLOAT</var></span></kbd></td>
+<kbd><span class="option">--p-rev-comp-barcodes /--p-no-rev-comp-barcodes <var> </var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>The minimum length that a sequence read can
-be following truncation and still be
-retained. This length should be provided as
-a fraction of the input sequence length.
-[default: 0.75]</td></tr>
+<tr><td>&#160;</td><td>If provided, the barcode sequence reads
+  will be reverse complemented prior to demultiplexing.
+[default: False]</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--p-max-ambiguous <var>INTEGER</var></span></kbd></td>
+<kbd><span class="option">--p-rev-comp-mapping-barcodes / --p-no-rev-comp-mapping-barcodes <var> </var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>The maximum number of ambiguous (i.e., N)
-base calls. This is applied after trimming
-sequences based on <cite>min_length_fraction</cite>.
-[default: 0]</td></tr>
+<tr><td>&#160;</td><td>If provided, the barcode sequences in the sample
+  metadata will be reverse complemented prior to
+  demultiplexing.
+[default: False]</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--o-filtered-sequences <var>ARTIFACT_PATH</var></span></kbd></td>
+<kbd><span class="option">--output-dir <var>PATH</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>SampleData[JoinedSequencesWithQuality]
-The resulting quality-filtered sequences.
-[required if not passing –output-dir]</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--o-filter-stats <var>ARTIFACT_PATH</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Summary statistics of the filtering process. [required if not passing –output-dir]</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--output-dir <var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Output unspecified results to a directory</td></tr>
+<tr><td>&#160;</td><td>Output unspecified results to a directory.
+</td></tr>
 </tbody>
 </table>
 </div></blockquote>
 </div>
 <div class="section" id="deblur-the-new-otu">
-<h2>Deblur - The New OTU<a class="headerlink" href="#deblur-the-new-otu" title="Permalink to this headline">¶</a></h2>
+<h2>DADA2 - The New OTU<a class="headerlink" href="#dada2-the-new-otu" title="Permalink to this headline">¶</a></h2>
 <div class="figure" id="id11">
 <a class="reference internal image-reference" href="../_images/otu_traditional.png"><img alt="otu_traditional" src="../_images/otu_traditional.png" style="width: 646.2px; height: 446.4px;" /></a>
 <p class="caption"><span class="caption-text">Traditional Operational Taxonomic Unit (OTU) clustering</span></p>
 </div>
-<p><strong>How do we actually charicterize a community?</strong></p>
+<p><strong>How do we actually characterize a community?</strong></p>
 <ol class="arabic">
 <li><p class="first">Lump similar sequences together
 - There are a variety of algorithms</p>
@@ -519,48 +477,63 @@ The resulting quality-filtered sequences.
 <li><p class="first">Total the counts for each cluster across each sample into observation table</p>
 </li>
 </ol>
-<p><strong>We will use Deblur. DADA2 is now really the other option (don’t use traditional % cutoffs).</strong></p>
+<p><strong>We will use DADA2. Deblur is now really the other option (don’t use traditional % cutoffs).</strong></p>
 <p>There are advantages and caveats to each, but they get very similar results for the most part.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Deblur removes sequences that are not likely biologically valid</li>
+<li>DADA2 corrects sequences that are not likely biologically valid</li>
+<li>Deblur requires separate commands to pair and quality-filter sequences prior to denoising</li>
+<li>DADA2 pairs, trims, quality-filters, and denoises sequences all in one command</li>
+</ul>
+</div></blockquote>
+</li>
 <dl class="docutils">
-<dt><strong>To get Deblur ‘features’ we will:</strong></dt>
+<dt><strong>To get DADA2 ‘features’ we will:</strong></dt>
 <dd><ol class="first last arabic simple">
+<li>Pair the sequences</li>
 <li>Evaluate the quality (Phred) scores along the sequences</li>
-<li>Trim the sequences to the same length</li>
-<li>Use Deblur to ‘denoise’ - remove likely sequencing errors</li>
-<li>Use Deblur to count the remaining sequences for each feature</li>
+<li>Trim the sequences to the same length and to remove primers</li>
+<li>Use DADA2 to ‘denoise’ - correct likely sequencing errors</li>
+<li>Use DADA2 to count the remaining sequences for each feature</li>
 </ol>
 </dd>
 </dl>
-<p><strong>First let’s decide where to trim our sequences… click the ‘Interactive Quality Plot’ tab</strong></p>
+<p>To learn more about using Deblur, <a class="reference external" href="https://docs.qiime2.org/2020.8/tutorials/read-joining/">take a look at this QIIME2 tutorial</a>.</p>
+<p><strong>Let’s go back to our summary plot to decide where to trim our sequences… click the ‘Interactive Quality Plot’ tab</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### INVESTIGATE THE QUALITY SCORE PLOT TO PICK TRIM LENGTHS BELOW #####</span>
-qiime tools view paired_end/1_7_qc_summary.qzv
+qiime tools view paired_end/1_2_demultiplexed_seqs_summary.qzv
 </pre></div>
 </div>
-<p>Note in the middle how the paired end overlap leads to higher Phred confidence!</p>
-<p><strong>Let’s trim to 240bp just before the dip…</strong></p>
-<p>This is somewhat arbitrary, but generally pick a point where the quality drops and make sure you change in your script!</p>
+<p>Note at the ends, the quality starts to dip slightly. However, the Phred score never drops below 20, so we will keep the full length read.</p>
+<p>Where you trim on the ends is somewhat subjective, but generally pick a point where the quality drops but you still have enough overlap and make sure you change in your script!</p>
+<p><strong>Let’s set the right/reverse truncation to 150bp (our sequence length) for both sequences</strong></p>
+<p>Where you trim at the beginning is based entirely on your primer length. The primers in this study were both 13bp long</p>
+<p><strong>Let’s set the left/forward trim to 13bp (our primer length) for both sequences</strong></p>
 <p>There are many options for the next step, think about your situation</p>
-<p><strong>Deblur! Lets denoise our sequences into a feature table</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DEBLUR DENOISE DUPLICATE SEQUENCES AND CREATE OBSERVATIONS #####</span>
-qiime deblur denoise-16S <span class="se">\</span>
-  --i-demultiplexed-seqs paired_end/1_5_qc_seqs.qza <span class="se">\</span>
-  --p-trim-length <span class="m">240</span> <span class="se">\</span>
-  --o-representative-sequences paired_end/2_0_deblur_representative_seqs.qza <span class="se">\</span>
-  --o-table paired_end/2_1_deblur_table.qza <span class="se">\</span>
-  --p-sample-stats <span class="se">\</span>
-  --o-stats paired_end/2_2_deblur_stats.qza
+<p><strong>DADA2! Lets denoise our sequences into a feature table</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DADA2 DENOISE DUPLICATE SEQUENCES AND CREATE OBSERVATIONS #####</span>
+qiime dada2 denoise-paired <span class="se">\</span>
+  --i-demultiplexed-seqs paired_end/1_1_demultiplexed_seqs.qza <span class="se">\</span>
+  --p-trunc-len-f <span class="m">150</span> <span class="se">\</span>
+  --p-trunc-len-r <span class="m">150</span> <span class="se">\</span>
+  --p-trim-left-f <span class="m">13</span> <span class="se">\</span>
+  --p-trim-left-r <span class="m">13</span> <span class="se">\</span>
+  --o-representative-sequences paired_end/2_0_dada2_representative_seqs.qza <span class="se">\</span>
+  --o-table paired_end/2_1_dada2_table.qza <span class="se">\</span>
+  --o-denoising-stats paired_end/2_2_dada2_stats.qza
 
 <span class="c1"># See output files</span>
 ls -lsh paired_end
 </pre></div>
 </div>
-<p><em>Deblur can take a while to run, so take a minute to stretch your legs!</em></p>
+<p><em>DADA2 can take a while to run, so take a minute to stretch your legs!</em></p>
 </div>
 <p><strong>Now we have generated:</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><dl class="first docutils">
-<dt>Representative sequences: 2_0_deblur_representative_seqs.qza</dt>
+<dt>Representative sequences: 2_0_dada2_representative_seqs.qza</dt>
 <dd><ul class="first last">
 <li>These will be used for alignment, phylogeny building, and taxonomic assignment</li>
 </ul>
@@ -568,7 +541,7 @@ ls -lsh paired_end
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Observation table: 2_1_deblur_table.qza</dt>
+<dt>Observation table: 2_1_dada2_table.qza</dt>
 <dd><ul class="first last">
 <li>These are the counts for each representative sequence across each sample</li>
 </ul>
@@ -576,7 +549,7 @@ ls -lsh paired_end
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Statistics: 2_2_deblur_stats.qza</dt>
+<dt>Statistics: 2_2_dada2_stats.qza</dt>
 <dd><ul class="first last">
 <li>Allows us to examine counts across samples</li>
 </ul>
@@ -586,35 +559,34 @@ ls -lsh paired_end
 </ul>
 </div></blockquote>
 <p><strong>Let’s look at the stats…</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DEBLUR VISUALIZE STATISTICS #####</span>
-qiime deblur visualize-stats <span class="se">\</span>
-   --i-deblur-stats paired_end/2_2_deblur_stats.qza <span class="se">\</span>
-   --o-visualization paired_end/2_3_deblur_stats_summary.qzv
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DADA2 VISUALIZE STATISTICS #####</span>
+qiime metadata tabulate <span class="se">\</span>
+   --m-input-file paired_end/2_2_dada2_stats.qza <span class="se">\</span>
+   --o-visualization paired_end/2_3_dada2_stats_summary.qzv
 
-qiime tools view paired_end/2_3_deblur_stats_summary.qzv
+qiime tools view paired_end/2_3_dada2_stats_summary.qzv
 </pre></div>
 </div>
 <p><strong>And summarize the table…</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DEBLUR SUMMARIZE TABLE #####</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DADA2 SUMMARIZE TABLE #####</span>
 qiime feature-table summarize <span class="se">\</span>
-   --i-table paired_end/2_1_deblur_table.qza <span class="se">\</span>
-   --o-visualization paired_end/2_4_deblur_table_summary.qzv <span class="se">\</span>
+   --i-table paired_end/2_1_dada2_table.qza <span class="se">\</span>
+   --o-visualization paired_end/2_4_dada2_table_summary.qzv <span class="se">\</span>
    --m-sample-metadata-file paired_end/metadata.tsv
 
-qiime tools view paired_end/2_4_deblur_table_summary.qzv
+qiime tools view paired_end/2_4_dada2_table_summary.qzv
 </pre></div>
 </div>
 <p><strong>And look at the representative sequences…</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DEBLUR SUMMARIZE SEQUENCES #####</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### DADA2 SUMMARIZE SEQUENCES #####</span>
 qiime feature-table tabulate-seqs <span class="se">\</span>
-   --i-data paired_end/2_0_deblur_representative_seqs.qza <span class="se">\</span>
-   --o-visualization paired_end/2_5_deblur_representative_seqs_summary.qzv
+   --i-data paired_end/2_0_dada2_representative_seqs.qza <span class="se">\</span>
+   --o-visualization paired_end/2_5_dada2_representative_seqs_summary.qzv
 
-qiime tools view paired_end/2_5_deblur_representative_seqs_summary.qzv
+qiime tools view paired_end/2_5_dada2_representative_seqs_summary.qzv
 </pre></div>
 </div>
 <p><strong>Neat! Well done!</strong></p>
-</div>
 <div class="section" id="alignment-into-amplicon-phylogeny">
 <h2>Alignment into Amplicon Phylogeny<a class="headerlink" href="#alignment-into-amplicon-phylogeny" title="Permalink to this headline">¶</a></h2>
 <div class="figure" id="id12">
@@ -635,26 +607,15 @@ qiime tools view paired_end/2_5_deblur_representative_seqs_summary.qzv
 <li>Root the phylogeny at the tree’s midpoint</li>
 </ol>
 </dd>
+<p>QIIME2 has individual commands that perform each of these steps, but also has a helpful buildin pipeline that runs all of them with a single command.</p>
 </dl>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### CREATE ALIGNMENT OF REPRESENTATIVE SEQUENCES #####</span>
-qiime alignment mafft <span class="se">\</span>
-   --i-sequences paired_end/2_0_deblur_representative_seqs.qza <span class="se">\</span>
-   --o-alignment paired_end/3_0_deblur_aligned_seqs.qza
-
-<span class="c1">##### MASK HIGHLY VARIABLE NOISY POSITIONS IN ALIGNMENT #####</span>
-qiime alignment mask <span class="se">\</span>
-   --i-alignment paired_end/3_0_deblur_aligned_seqs.qza <span class="se">\</span>
-   --o-masked-alignment paired_end/3_1_deblur_aligned_masked.qza
-
-<span class="c1">##### CREATE PHYLOGENY WITH FASTTREE #####</span>
-qiime phylogeny fasttree <span class="se">\</span>
-   --i-alignment paired_end/3_1_deblur_aligned_masked.qza <span class="se">\</span>
-   --o-tree paired_end/3_2_deblur_tree_unrooted.qza
-
-<span class="c1">##### ROOT PHYLOGENY AT MIDPOINT #####</span>
-qiime phylogeny midpoint-root <span class="se">\</span>
-   --i-tree paired_end/3_2_deblur_tree_unrooted.qza <span class="se">\</span>
-   --o-rooted-tree paired_end/3_3_deblur_tree.qza
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### ALIGNMENT REPRESENTATIVE SEQUENCES, MASK NOISY POSITIONS, CREATE PHYLOGENY, ROOT PHYLOGENY AT MIDPOINT #####</span>
+qiime phylogeny align-to-tree-mafft-fasttree <span class="se">\</span>
+   --i-sequences paired_end/2_0_dada2_representative_seqs.qza <span class="se">\</span>
+   --o-alignment paired_end/3_0_dada2_aligned_seqs.qza
+   --o-masked-alignment paired_end/3_1_dada2_aligned_masked.qza
+   --o-tree paired_end/3_2_dada2_tree_unrooted.qza
+   --o-rooted-tree paired_end/3_3_dada2_tree.qza
 
 <span class="c1"># look at files</span>
 ls -lsh paired_end
@@ -674,7 +635,7 @@ ls -lsh paired_end
 <dd><ul class="first last simple">
 <li>Silva</li>
 <li>GreenGenes 99%</li>
-<li><a class="reference external" href="https://docs.qiime2.org/2018.8/data-resources/">Other options, please learn which is best for your project!</a></li>
+<li><a class="reference external" href="https://docs.qiime2.org/2020.8/data-resources/">Other options, please learn which is best for your project!</a></li>
 </ul>
 </dd>
 <dt><a href="#id1"><span class="problematic" id="id2">**</span></a>First import the GreenGenes Database*</dt>
@@ -756,7 +717,7 @@ qiime feature-classifier fit-classifier-naive-bayes <span class="se">\</span>
 <span class="c1">### ASSIGN TAXONOMY WITH TRAINED CLASSIFIER ###</span>
 qiime feature-classifier classify-sklearn <span class="se">\</span>
    --i-classifier paired_end/greengenes_94_classifier.qza <span class="se">\</span>
-   --i-reads paired_end/2_0_deblur_representative_seqs.qza <span class="se">\</span>
+   --i-reads paired_end/2_0_dada2_representative_seqs.qza <span class="se">\</span>
    --o-classification paired_end/3_4_assigned_greengenes_94_taxonomy.qza
 </pre></div>
 </div>
@@ -784,7 +745,7 @@ qiime tools view paired_end/3_5_taxonomy_visualization.qzv
 <li><a class="reference internal" href="#sequence-file-formats">Sequence File Formats</a></li>
 <li><a class="reference internal" href="#types-of-sequences-in-qiime2">Types of Sequences in QIIME2</a></li>
 <li><a class="reference internal" href="#importing-demultiplexing-and-sequence-quality-control">Importing, Demultiplexing, and Sequence Quality Control</a></li>
-<li><a class="reference internal" href="#deblur-the-new-otu">Deblur - The New OTU</a></li>
+<li><a class="reference internal" href="#dada2-the-new-otu">DADA2 - The New OTU</a></li>
 <li><a class="reference internal" href="#alignment-into-amplicon-phylogeny">Alignment into Amplicon Phylogeny</a></li>
 <li><a class="reference internal" href="#taxonomy-assignment">Taxonomy Assignment</a></li>
 </ul>
@@ -832,7 +793,7 @@ qiime tools view paired_end/3_5_taxonomy_visualization.qzv
         <li class="right" >
           <a href="2_experimental_design.html" title="Experimental Design and Sample Preparation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">VMI Bootcamp II 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">VMI Bootcamp IV 1.0 documentation</a> &#187;</li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
