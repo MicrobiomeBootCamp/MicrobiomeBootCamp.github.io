@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Microbiome Analysis and Hypothesis Testing &#8212; VIVBootcamp IV 1.0 documentation</title>
+    <title>Microbiome Analysis and Hypothesis Testing &#8212; VMI Bootcamp IV 1.0 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
 
@@ -223,8 +223,8 @@ qiime tools view american_gut/2_5_alpha_correlation_<span class="s2">&quot;</spa
 <dt>Permanova &amp; Anosim tests</dt>
 <dd><ul class="first last">
 <li>Permanova - mathematically more like a regression</li>
-<li>Anosim - more like an anova</li>
-<li>If your variable is categorical I’d do both</li>
+<li>Anosim - more like an ANOVA, and more sensitive to uneven variance</li>
+<li>Permanova is generally more rigorous, but if your variable is categorical I’d do both</li>
 </ul>
 </dd>
 </dl>
@@ -336,7 +336,7 @@ qiime tools view american_gut/2_9_ancom_l5_age_cat.qzv
 <h2>Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this headline">¶</a></h2>
 <div class="figure" id="id7">
 <a class="reference internal image-reference" href="../_images/calssifier.png"><img alt="calssifier" src="../_images/calssifier.png" style="width: 2000.0px; height: 940.0px;" /></a>
-<p class="caption"><span class="caption-text">Supervised learning classifiers perform series of steps to predict metadata groups from microbiome profiles. Source: <a class="reference external" href="https://docs.qiime2.org/2018.8/tutorials/sample-classifier/">https://docs.qiime2.org/2018.8/tutorials/sample-classifier/</a></span></p>
+<p class="caption"><span class="caption-text">Supervised learning classifiers perform series of steps to predict metadata groups from microbiome profiles. Source: <a class="reference external" href="https://docs.qiime2.org/2020.8/tutorials/sample-classifier/">https://docs.qiime2.org/2020.8/tutorials/sample-classifier/</a></span></p>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime sample-classifier classify-samples <span class="se">\</span>
    --i-table <span class="s2">&quot;</span><span class="nv">$table</span><span class="s2">&quot;</span> <span class="se">\</span>
@@ -426,7 +426,7 @@ qiime tools view american_gut/3_0_random_forest_bmi_cat/accuracy_results.qzv
         <li class="right" >
           <a href="4_concepts_of_community_analysis.html" title="Concepts of Community Analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">VMI Bootcamp II 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">VMI Bootcamp IV 1.0 documentation</a> &#187;</li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">

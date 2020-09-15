@@ -64,10 +64,10 @@
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>You may get processed data from a colaborator / website already as a table, phylogeny…</dt>
+<dt>You may get processed data from a collaborator / website already as a table, phylogeny…</dt>
 <dd><ul class="first last">
 <li>Need to know how to import at any stage of the project</li>
-<li><a class="reference external" href="https://docs.qiime2.org/2018.8/tutorials/importing/">QIIME2 Importing Tutorial</a></li>
+<li><a class="reference external" href="https://docs.qiime2.org/2020.8/tutorials/importing/">QIIME2 Importing Tutorial</a></li>
 <li><dl class="first docutils">
 <dt>There are far more options than even they show</dt>
 <dd><ul class="first last">
@@ -336,9 +336,9 @@ qiime tools view american_gut/1_3_biom_summary.qzv
 <dl class="docutils">
 <dt><strong>Let’s work with this cleaner data, while keeping in mind there are tons of other ways to filter!</strong></dt>
 <dd><ul class="first last simple">
-<li>Remove sequences before Deblur feature analysis: qiime quality-control exclude-seqs</li>
+<li>Remove sequences before DADA2 or Deblur feature analysis: qiime quality-control exclude-seqs</li>
 <li>Remove samples and features based on the mock community: qiime quality-control evaluate-composition</li>
-<li><a class="reference external" href="https://docs.qiime2.org/2018.8/tutorials/filtering/">More extensive filtering documentation</a>.</li>
+<li><a class="reference external" href="https://docs.qiime2.org/2020.8/tutorials/filtering/">More extensive filtering documentation</a>.</li>
 </ul>
 </dd>
 <dt><strong>Keep in mind:</strong></dt>
@@ -459,7 +459,7 @@ qiime tools view american_gut/1_3_biom_summary.qzv
 </pre></div>
 </div>
 <dl class="docutils">
-<dt><strong>So let’s exmaine how our community is taxonomically distributed!</strong></dt>
+<dt><strong>So let’s examine how our community is taxonomically distributed!</strong></dt>
 <dd><ul class="first last simple">
 <li>Barplots of the taxonomic distribution of features for each sample</li>
 <li>These plots are based on relative abundance within a total sample</li>
@@ -547,7 +547,7 @@ qiime feature-table relative-frequency <span class="se">\ </span>...
 <dl class="docutils">
 <dt><strong>There are other normalization methods, often based on RNA sequencing methods.</strong></dt>
 <dd><ul class="first last simple">
-<li>Generally seem more biased than rarefy / relative abundance</li>
+<li>Can be more biased than rarefy / relative abundance, depending on the dataset</li>
 <li>Better fit in standard sense, don’t seem to adapt well to wide bias across different datasets</li>
 </ul>
 </dd>
@@ -584,10 +584,10 @@ qiime feature-table relative-frequency <span class="se">\ </span>...
 </tbody>
 </table>
 <dl class="docutils">
-<dt><strong>Summary: I’d suggest sticking to relative abundance and rarefied communities!</strong></dt>
+<dt><strong>Summary: I’d suggest sticking to relative abundance and rarefied communities, unless you have a solid reason to use another method!</strong></dt>
 <dd><ul class="first last simple">
 <li>Remember how many things can bias microbiome data</li>
-<li>The Poisson / Negative Binomial fit in more advanced models doesn’t seem to adapt well</li>
+<li>The Poisson / Negative Binomial fit in more advanced models doesn’t always adapt well</li>
 </ul>
 </dd>
 </dl>
@@ -607,7 +607,7 @@ qiime feature-table relative-frequency <span class="se">\ </span>...
 </div>
 <p><a class="reference external" href="https://forum.qiime2.org/t/alpha-and-beta-diversity-explanations-and-commands/2282">There are many metrics (ways to measure) Alpha and Beta Diversity</a></p>
 <p><strong>Both Alpha and Beta Diversity can take into account the microbial phylogeny with certain metrics</strong></p>
-<p>Metrics are assigned with the <em>-p-metric</em> argument:</p>
+<p>Metrics are assigned with the <em>--p-metric</em> argument:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alpha Diversity - Non-Phylogenetic Observed OTUs</span>
 qiime diversity alpha <span class="se">\</span>
   --i-table <span class="s2">&quot;</span><span class="nv">$table</span><span class="s2">&quot;</span> <span class="se">\</span>
@@ -738,7 +738,7 @@ sklearn.metrics.pairwise_distances)
 </pre></div>
 </div>
 <dl class="docutils">
-<dt><strong>Note the –p-sampling-depth Option:</strong></dt>
+<dt><strong>Note the --p-sampling-depth Option:</strong></dt>
 <dd><ul class="first last simple">
 <li>This is the depth we will rarefy for each sample</li>
 <li>Since we know each sample has 50,000 counts we will use that</li>
