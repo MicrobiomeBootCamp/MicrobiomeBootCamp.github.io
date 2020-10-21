@@ -612,10 +612,10 @@ qiime tools view paired_end/2_5_dada2_representative_seqs_summary.qzv
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### ALIGNMENT REPRESENTATIVE SEQUENCES, MASK NOISY POSITIONS, CREATE PHYLOGENY, ROOT PHYLOGENY AT MIDPOINT #####</span>
 qiime phylogeny align-to-tree-mafft-fasttree <span class="se">\</span>
    --i-sequences paired_end/2_0_dada2_representative_seqs.qza <span class="se">\</span>
-   --o-alignment paired_end/3_0_dada2_aligned_seqs.qza
-   --o-masked-alignment paired_end/3_1_dada2_aligned_masked.qza
-   --o-tree paired_end/3_2_dada2_tree_unrooted.qza
-   --o-rooted-tree paired_end/3_3_dada2_tree.qza
+   --o-alignment paired_end/3_0_dada2_aligned_seqs.qza <span class="se">\</span>
+   --o-masked-alignment paired_end/3_1_dada2_aligned_masked.qza <span class="se">\</span>
+   --o-tree paired_end/3_2_dada2_tree_unrooted.qza <span class="se">\</span>
+   --o-rooted-tree paired_end/3_3_dada2_tree.qza <span class="se">\</span>
 
 <span class="c1"># look at files</span>
 ls -lsh paired_end
